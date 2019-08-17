@@ -1,0 +1,25 @@
+<div>
+	<label> Camera X </label>
+	<input type="number" v-model="cameraX">
+	<br>
+	<label> Camera Y </label>
+	<input type="number" v-model="cameraY">
+	<br>
+	<label> Camera Z </label>
+	<input type="number" v-model="cameraZ">
+	<br>
+	<label> Target X </label>
+	<input type="number" v-model="targetX">
+	<br>
+	<label> Target Y </label>
+	<input type="number" v-model="targetY">
+	<br>
+	<label> Target Z </label>
+	<input type="number" v-model="targetZ">
+	<br>
+	<label> DOF Strength </label>
+	<input type="number" v-model="dofStrength">
+	<br>
+
+	<button v-on:click="saveScript">Save cfg</button>
+</div>
