@@ -18,7 +18,9 @@
     "webpack-cli": "^3.3.6"
   },
   "dependencies": {
-    "vue": "^2.6.10",
-    "electron-debug": "^3.0.1"
+    "electron-debug": "^3.0.1",
+    "jimp": "^0.6.4",
+    "temp": "^0.9.0",
+    "vue": "^2.6.10"
   }
 }
