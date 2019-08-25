@@ -1,7 +1,6 @@
 const {app, BrowserWindow, ipcMain, dialog} = require('electron');
 const fs = require('fs');
 const util = require('util');
-require('electron-debug')({"showDevTools": true, "enabled": true});
 var temp = require("temp").track();
 var Jimp = require("jimp");
 
@@ -10,7 +9,6 @@ main();
 async function main(){
 	await appReady();
 	var win = await createWindow();
-
 	ipcMain.on('saveAs', saveAs(win));
 	ipcMain.on('mergeScreenshots', mergeScreenshots(win));
 }
@@ -29,6 +27,7 @@ function mergeScreenshots(win){
 		if (canceled) return;
 		var tempDirPath = await util.promisify(temp.mkdir)('tempDir');
 		var imageToBeProcessed = filePaths.map(o=>{ return {"path":o, "weight" : 1}});
+		var initialImagesCount = filePaths.length;
 
 		while (imageToBeProcessed.length > 1){
 			imageToBeProcessed.sort((a,b)=>a.weight-b.weight).reverse();
@@ -56,8 +55,11 @@ function mergeScreenshots(win){
 			if (imgA.unlink) await util.promisify(fs.unlink)(imgA.path);
 			if (imgB.unlink) await util.promisify(fs.unlink)(imgB.path);
 			await jimpMerged.writeAsync(merged.path);
+			var progress = ((initialImagesCount-imageToBeProcessed.length)/initialImagesCount)*100;
+			win.webContents.send("mergeProgressUpdate", progress);
 		}
 
+		win.webContents.send("mergeProgressUpdate", undefined);
 		var data = await util.promisify(fs.readFile)(imageToBeProcessed[0].path);
 		await saveAs(win)(null, {data, "options" : {"defaultPath" : "csgo-dof-screenshot.png"}});
 	}
@@ -65,14 +67,17 @@ function mergeScreenshots(win){
 
 async function createWindow(){
 	var win = new BrowserWindow({
-		"width": 800,
+		"width": 490,
 		"height": 600,
 		"webPreferences": {
 			"nodeIntegration": true
 		}
 	});
 
-	return await win.loadFile('index.html');
+	win.setMenuBarVisibility(false);
+	win.setResizable(false);
+	await win.loadFile('index.html');
+	return win;
 }
 
 function appReady(){

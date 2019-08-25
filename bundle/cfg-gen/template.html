@@ -1,25 +1,25 @@
-<div>
-	<label> Camera X </label>
-	<input type="number" v-model="cameraX">
-	<br>
-	<label> Camera Y </label>
-	<input type="number" v-model="cameraY">
-	<br>
-	<label> Camera Z </label>
-	<input type="number" v-model="cameraZ">
-	<br>
-	<label> Target X </label>
-	<input type="number" v-model="targetX">
-	<br>
-	<label> Target Y </label>
-	<input type="number" v-model="targetY">
-	<br>
-	<label> Target Z </label>
-	<input type="number" v-model="targetZ">
-	<br>
-	<label> DOF Strength </label>
-	<input type="number" v-model="dofStrength">
-	<br>
+<div class="panel">
+	<p class="title1"> dof.cfg script </p>
 
-	<button v-on:click="saveScript">Save cfg</button>
+	<div style="display: grid; grid-template-columns: 60% 40%">
+		<div class="label underline"> <span> Camera X </span> </div>
+		<div> <input pattern="^\d+$" v-model="cameraX"></div>
+		<div class="label underline"> <span> Camera Y </span> </div>
+		<div> <input pattern="^\d+$" v-model="cameraY"></div>
+		<div class="label underline"> <span> Camera Z </span> </div>
+		<div> <input pattern="^\d+$" v-model="cameraZ"></div>
+		<div class="label underline"> <span> Target X </span> </div>
+		<div> <input pattern="^\d+$" v-model="targetX"></div>
+		<div class="label underline"> <span> Target Y </span> </div>
+		<div> <input pattern="^\d+$" v-model="targetY"></div>
+		<div class="label underline"> <span> Target Z </span> </div>
+		<div> <input pattern="^\d+$" v-model="targetZ"></div>
+		<div class="label underline"> <span> DOF Strength </span> </div>
+		<div> <input pattern="^\d+$" v-model="dofStrength"> </div>
+		<div class="label"> <span> Bind key </span> </div>
+		<div> <input pattern="^[a-zA-Z]$" v-model="bindKey"></div>
+	</div>
+	
+	<br>
+	<button v-on:click="saveScript"> save </button>
 </div>

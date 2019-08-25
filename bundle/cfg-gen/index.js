@@ -20,7 +20,8 @@ function data(){
 		"targetX"     : 693,
 		"targetY"     : 546,
 		"targetZ"     : 122,
-		"dofStrength" : 3
+		"dofStrength" : 3,
+		"bindKey"     : "I"
 	}
 }
 
@@ -40,7 +41,7 @@ function script(){
 	};
 
 	for (var i = 0; i < 600; i++) tmp += printCommand(camera, target, this.dofStrength, i);
-	tmp += "bind o dof1;\n";
+	tmp += `bind ${String(this.bindKey)} dof1;\n`;
 	return tmp;
 }
 

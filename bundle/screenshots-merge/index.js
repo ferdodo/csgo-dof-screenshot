@@ -3,14 +3,25 @@ import { ipcRenderer } from "electron";
 
 Vue.component("screenshots-merge", {
 	template,
-	data, 
+	data,
+	mounted,
 	"methods" : {
-		mergeScreenshots
+		mergeScreenshots,
+		updateMergeProgress
 	}
 });
 
+async function mounted(){
+	await ipcRenderer.on('mergeProgressUpdate', this.updateMergeProgress);
+}
+
+function updateMergeProgress(event, data){
+	this.mergeProgress = data;
+}
+
 function data(){
 	return {
+		"mergeProgress" : undefined
 	}
 }
 

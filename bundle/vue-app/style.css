@@ -1,0 +1,92 @@
+@font-face {
+	font-family: goodlight;
+	src: url("./Goodlight.otf") format("opentype");
+}
+
+@font-face {
+	font-family: goodlightlight;
+	src: url("./Goodlight-Light.otf") format("opentype");
+}
+
+body{
+	background-image: url("bg.jpg");
+}
+
+body, input, button{
+	font-family: goodlightlight;
+	color:  #FFFFFFCC;
+	font-size: 3mm;
+	letter-spacing: 0.15em;
+}
+
+.title1{
+	font-family: goodlight;
+	font-size: 1.5em;
+	text-transform: uppercase;
+}
+
+.panel{
+	margin: 5mm;
+	padding: 5mm;
+}
+
+.underline{
+	border-bottom: 1px solid #FFFFFF33;
+}
+
+input{
+	border: none;
+	width: 90%;
+	border: 1px solid transparent;
+	transition: border-color .25s cubic-bezier(0, 0.61, 0.36, 1);
+}
+
+.underline + div>input {
+	border-bottom: 1px solid #FFFFFF33;
+}
+
+.underline + div>input:focus {
+	border-bottom: 1px solid #FFFFFFCC;
+}
+
+input:focus {
+	outline: none;
+	border: 1px solid #FFFFFFCC;
+}
+
+input:invalid {
+	border: 1px solid #FF0000CC;
+}
+
+button{
+	outline: none;
+	font-family: goodlight;
+	background-color: transparent;
+	border: none;
+	text-transform: uppercase;
+	transition: background-color .5s cubic-bezier(0, 0.61, 0.36, 1);
+}
+
+input, button, .label{
+	padding: 2mm;
+}
+
+button:focus, button:hover, input, .panel, .loading-container{
+	background-color: #00000033;
+}
+
+.loading-container, .loading, button, input{
+	border-radius: 2px;
+}
+
+.loading-container{
+	height: 20px;
+	width: 100%;
+}
+
+.loading{
+	background-color: #00FF0055;
+	width: 50%;
+	height: 100%;
+	transition: width 1s ease;
+}
