@@ -3,10 +3,6 @@
   "version": "1.0.0",
   "description": "This is a tool that helps to create screenshot with deep of field effect in Counter Strike Global Offensive.",
   "main": "electron.js",
-  "scripts": {
-    "build": "electron-builder",
-    "bundle": "webpack --mode=development"
-  },
   "keywords": [],
   "author": "Thomas Riffard",
   "license": "ISC",
