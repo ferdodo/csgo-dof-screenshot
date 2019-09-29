@@ -89,4 +89,5 @@ button:focus, button:hover, input, .panel, .loading-container{
 	width: 50%;
 	height: 100%;
 	transition: width 1s ease;
+	white-space: nowrap;
 }
