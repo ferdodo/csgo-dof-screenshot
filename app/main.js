@@ -76,7 +76,7 @@ async function createWindow(){
 
 	win.setMenuBarVisibility(false);
 	win.setResizable(false);
-	await win.loadFile('index.html');
+	await win.loadFile('gui/dist/index.html');
 	return win;
 }
 

@@ -1,5 +1,6 @@
 import template from "./template.html";
 import { ipcRenderer } from "electron";
+import Vue from "vue";
 
 Vue.component("screenshots-merge", {
 	template,

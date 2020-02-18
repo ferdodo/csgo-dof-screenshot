@@ -1,11 +1,14 @@
 const path = require('path');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+	"mode" : "production",
 	"entry": './index.js',
 	"output": {
-		"path": path.resolve(__dirname, '../../www'),
+		"path": path.resolve(__dirname, 'dist'),
 		"filename": 'index.js'
 	}, 
+	"plugins" : [new HtmlWebpackPlugin()],
 	"module" : {
 		"rules" : [{
 			"test" : /\.html$/,
@@ -21,5 +24,10 @@ module.exports = {
 			}
 		}
 	]},
-	"target" : "electron-renderer"
+	"target" : "electron-renderer", 
+	"resolve": {
+		"alias": {
+		  'vue$': 'vue/dist/vue.esm.js'
+		}
+	}
 };
