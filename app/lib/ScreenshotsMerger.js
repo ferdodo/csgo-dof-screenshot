@@ -37,7 +37,7 @@ async function _mergeAll(screenshotsMerger){
 
 		var tempDirPath = await screenshotsMerger.waitTempDirPath;
 		var merged = await a.merge(b, tempDirPath);
-		screenshotsMerger.images.push(merged);
+		screenshotsMerger.add(merged);
 		screenshotsMerger.remove(a);
 		screenshotsMerger.remove(b);
 		mergeProgressSender.sendProgress();
