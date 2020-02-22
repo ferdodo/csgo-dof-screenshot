@@ -37,7 +37,7 @@ function mergeScreenshots(win){
 async function createWindow(){
 	var win = new BrowserWindow({
 		"width": 490,
-		"height": 600,
+		"height": 630,
 		"webPreferences": {
 			"nodeIntegration": true
 		}
