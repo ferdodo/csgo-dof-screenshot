@@ -7,9 +7,9 @@
     "build-0": "cd gui && npx webpack",
     "build": "npm run build-0 && npx electron-builder"
   },
-  "build":{
-    "win" : {
-      "target" : "portable"
+  "build": {
+    "win": {
+      "target": "portable"
     }
   },
   "keywords": [
@@ -21,7 +21,7 @@
   "license": "MIT",
   "dependencies": {
     "css-loader": "^3.4.2",
-    "file-loader": "^5.0.2",
+    "file-loader": "^5.1.0",
     "html-webpack-plugin": "^3.2.0",
     "jimp": "^0.9.3",
     "raw-loader": "^4.0.0",
