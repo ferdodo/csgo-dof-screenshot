@@ -10,6 +10,9 @@
   "build": {
     "win": {
       "target": "portable"
+    }, 
+    "linux": {
+      "target": "AppImage"
     }
   },
   "keywords": [
