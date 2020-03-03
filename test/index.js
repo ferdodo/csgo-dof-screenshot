@@ -5,10 +5,7 @@ main().catch(exitBadly);
 
 
 async function main(){
-	var app = new Application({
-		path: 'dist/linux-unpacked/csgo-dof-screenshot',
-		args: ['--no-sandbox', '--headless', '--disable-gpu']
-	});
+	var app = createApplication();
 	await app.start();
 	await sleep(10)
 	await app.stop();
@@ -33,4 +30,18 @@ function sleep(time){
 	return new Promise(function(resolve, reject){
 		setTimeout(resolve, time*1000);
 	});
+}
+
+
+function createApplication(){
+	var path = undefined;
+
+	switch(process.platform){
+		case "win32": path = "dist/win-unpacked/csgo-dof-screenshot.exe"; break;
+		case "linux": path = "dist/linux-unpacked/csgo-dof-screenshot"; break;
+		default: throw new Error("Testing is not supported on this platform !");
+	}
+
+	var args = ['--no-sandbox', '--headless', '--disable-gpu'];
+	return new Application({path, args});
 }
