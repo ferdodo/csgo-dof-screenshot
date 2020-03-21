@@ -1,39 +1,21 @@
 var {Application} = require('spectron');
 var {execSync} = require("child_process");
 
-main().catch(exitBadly);
+
+(async function main(){
+	try{
+		var app = createSpectronApp();
+		await app.start();
+		await app.stop();
+	}catch(error){
+		console.error(error);
+		process.exit(-1);
+	}
+})();
 
 
-async function main(){
-	var app = createApplication();
-	await app.start();
-	await sleep(10)
-	await app.stop();
-	printSuccess();
-}
 
-
-function printSuccess(){
-	console.log("######################");
-	console.log("# SUCCESSFUL TESTING #");
-	console.log("######################");	
-}
-
-
-function exitBadly(error){
-	console.error(error);
-	process.exit(-1);
-}
-
-
-function sleep(time){
-	return new Promise(function(resolve, reject){
-		setTimeout(resolve, time*1000);
-	});
-}
-
-
-function createApplication(){
+function createSpectronApp(){
 	var path = undefined;
 
 	switch(process.platform){
