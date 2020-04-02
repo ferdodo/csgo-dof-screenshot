@@ -1,4 +1,3 @@
-import { execSync } from "child_process";
 import TestRunner from "./lib/TestRunner.ts";
 import test1 from "./tests/1-create-config.ts";
 
