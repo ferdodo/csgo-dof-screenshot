@@ -22,7 +22,8 @@ function data(){
 		"targetY"     : 546,
 		"targetZ"     : 122,
 		"dofStrength" : 3,
-		"bindKey"     : "I"
+		"bindKey"     : "I",
+		"scriptSaved" : false
 	}
 }
 
@@ -74,7 +75,7 @@ function calculateYaw(camera, target){
 }
 
 
-function printCommand(camera, target, spread, aliasNumber){
+function printCommand(camera, target, spread, aliasNumber, bindKey){
 	var shakedCamera = {
 		"x" : Number(camera.x) + spread * (Math.random()-0.5),
 		"y" : Number(camera.y) + spread * (Math.random()-0.5),
@@ -83,7 +84,7 @@ function printCommand(camera, target, spread, aliasNumber){
 
 	var pitch = calculatePitch(shakedCamera, target);
 	var yaw = calculateYaw(shakedCamera, target);
-	return `alias dof${aliasNumber} "devshots_screenshot; spec_goto ${shakedCamera.x.toFixed(4)} ${shakedCamera.z.toFixed(4)} ${shakedCamera.y.toFixed(4)} ${yaw.toFixed(4)} ${pitch.toFixed(4)}; bind o dof${aliasNumber+1}";\n`;
+	return `alias dof${aliasNumber} "devshots_screenshot; spec_goto ${shakedCamera.x.toFixed(4)} ${shakedCamera.z.toFixed(4)} ${shakedCamera.y.toFixed(4)} ${yaw.toFixed(4)} ${pitch.toFixed(4)}; bind ${bindKey} dof${aliasNumber+1}";\n`;
 }
 
 
@@ -94,11 +95,10 @@ function radians_to_degrees(radians){
 }
 
 
-function saveScript(){
-	ipcRenderer.send('saveAs', {
-		"data" : this.script,
-		"options" : {
-			"defaultPath" : "dof.cfg"
-		}
-	})
+async function saveScript(){
+	const script = this.script;
+	const scriptLocation = this.scriptLocation;
+	this.scriptSaved = "pending";
+	await ipcRenderer.invoke('saveScript', { script, scriptLocation });
+	this.scriptSaved = true;
 }

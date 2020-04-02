@@ -1,6 +1,7 @@
 const {app, BrowserWindow, ipcMain, dialog} = require('electron');
 const fs = require('fs');
 const util = require('util');
+const writeFile = util.promisify(fs.writeFile);
 var ScreenshotsMerger = require("./lib/ScreenshotsMerger.js");
 var WeightedImage = require("./lib/WeightedImage.js");
 
@@ -10,15 +11,13 @@ main();
 async function main(){
 	await appReady();
 	var win = await createWindow();
-	ipcMain.on('saveAs', saveAs(win));
+	ipcMain.handle('saveScript', saveScript(win));
 	ipcMain.on('mergeScreenshots', mergeScreenshots(win));
 }
 
-function saveAs(win){
+function saveScript(win){
 	return async function(event, payload){
-		var saveDialogResult = await dialog.showSaveDialog(win, payload.options);
-		if (saveDialogResult.canceled) return;
-		await util.promisify(fs.writeFile)(saveDialogResult.filePath, payload.data); 
+		await writeFile(payload.scriptLocation, payload.script); 
 	};
 }
 

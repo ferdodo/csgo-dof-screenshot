@@ -25,8 +25,13 @@
 
 		<div class="label"><span> Bind key </span></div>
 		<div><input id="inputKeyBind" pattern="^[a-zA-Z]$" v-model="bindKey" /></div>
+
+		<div class="label"><span> Script location </span></div>
+		<div><input id="inputScriptLocation" v-model="scriptLocation" /></div>
 	</div>
 
 	<br />
-	<button id="buttonSaveScript" v-on:click="saveScript">save</button>
+	<button id="buttonSaveScript" v-on:click="saveScript"> save </button>
+	<span id="displaySaveScriptPending" v-if="scriptSaved === 'penging'"> loading </span>
+	<span id="displaySaveScriptDone" v-if="scriptSaved === true"> success </span>
 </div>
