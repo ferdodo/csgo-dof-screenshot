@@ -1,4 +1,5 @@
-import TestRunner from "../lib/TestRunner.ts";
+import TestRunner from "../../lib/TestRunner.ts";
+import { setInput } from "../../lib/TestUtils.ts";
 const { readFileSync } = require("fs");
 const { random } = require("lodash");
 
@@ -6,15 +7,15 @@ export default async function test(testRunner: TestRunner) {
 	const scriptFilePath = "/csgo-dof-screenshot/dof.cfg";
 	const minPos = -100000;
 	const maxPos = 100000;
-	await testRunner.setInput("#inputCameraX", random(minPos, maxPos));
-	await testRunner.setInput("#inputCameraY", random(minPos, maxPos));
-	await testRunner.setInput("#inputCameraZ", random(minPos, maxPos));
-	await testRunner.setInput("#inputTargetX", random(minPos, maxPos));
-	await testRunner.setInput("#inputTargetY", random(minPos, maxPos));
-	await testRunner.setInput("#inputTargetZ", random(minPos, maxPos));
-	await testRunner.setInput("#inputDofStrength", random(-3000, 3000));
-	await testRunner.setInput("#inputKeyBind", "o");
-	await testRunner.setInput("#inputScriptLocation", scriptFilePath);
+	await setInput(testRunner, "#inputCameraX", random(minPos, maxPos));
+	await setInput(testRunner, "#inputCameraY", random(minPos, maxPos));
+	await setInput(testRunner, "#inputCameraZ", random(minPos, maxPos));
+	await setInput(testRunner, "#inputTargetX", random(minPos, maxPos));
+	await setInput(testRunner, "#inputTargetY", random(minPos, maxPos));
+	await setInput(testRunner, "#inputTargetZ", random(minPos, maxPos));
+	await setInput(testRunner, "#inputDofStrength", random(-3000, 3000));
+	await setInput(testRunner, "#inputKeyBind", "o");
+	await setInput(testRunner, "#inputScriptLocation", scriptFilePath);
 	await testRunner.spectronApp.client.click("#buttonSaveScript");
 	await testRunner.spectronApp.client.getValue("#displaySaveScriptDone");
 	const scriptBuffer = readFileSync(scriptFilePath);
