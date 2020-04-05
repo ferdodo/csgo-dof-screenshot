@@ -22,7 +22,7 @@
 	"author": "Thomas Riffard",
 	"license": "MIT",
 	"dependencies": {
-		"@types/node": "^13.9.8",
+		"@types/node": "^13.11.0",
 		"css-loader": "^3.4.2",
 		"file-loader": "^6.0.0",
 		"html-webpack-plugin": "^4.0.4",
