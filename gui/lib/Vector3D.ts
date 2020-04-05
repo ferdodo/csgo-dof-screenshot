@@ -12,14 +12,6 @@ export default class Vector3D{
 		if (!Number.isFinite(this.z)) throw new Error("Z is not a finite number!");
 	}
 
-	get json(){
-		return {
-			"x" : this.x,
-			"y" : this.y,
-			"z" : this.z,
-		};
-	}
-
 	randomize(spread:number){
 		const x = this.x + spread * (Math.random()-0.5);
 		const y = this.y + spread * (Math.random()-0.5);
