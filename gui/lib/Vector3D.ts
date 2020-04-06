@@ -25,28 +25,4 @@ export default class Vector3D{
 		const z = this.z - vector3d.z;
 		return new Vector3D(x,y,z);
 	}
-
-	public static csgoCameraPitch(camera:Vector3D, target:Vector3D){
-		const delta = target.delta(camera);
-		const result = radians_to_degrees(Math.atan2(Math.abs(delta.z), delta.x));
-		const hypothenuse = Math.sqrt(Math.pow(delta.x, 2) + Math.pow(delta.z, 2));
-		const sin = delta.z / hypothenuse;
-		if (sin < 0) return -result;
-		return result;
-	} 
-
-	public static csgoCameraYaw(camera:Vector3D, target:Vector3D){
-		const delta = target.delta(camera);
-		const horizontalDistance = Math.sqrt(Math.pow(delta.x, 2) + Math.pow(delta.z, 2));
-		const result = -radians_to_degrees(Math.atan2(Math.abs(delta.y), horizontalDistance));
-		if (delta.y < 0) return -result;
-		return result;
-	}
-}
-
-
-
-// https://www.w3resource.com/javascript-exercises/javascript-math-exercise-34.php
-function radians_to_degrees(radians:number){
-	return radians * (180/Math.PI);
 }
