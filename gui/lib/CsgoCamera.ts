@@ -17,8 +17,8 @@ export default class CsgoCamera {
 	}
 
 	lookAt(target: Vector3D) {
-		this.pitch = this.csgoCameraPitch(target);
-		this.yaw = this.csgoCameraYaw(target);
+		this.pitch = this.calculatePitch(target);
+		this.yaw = this.calculateYaw(target);
 	}
 
 	commandGoto() {
@@ -32,7 +32,7 @@ export default class CsgoCamera {
 		].join(" ");
 	}
 
-	private csgoCameraPitch(target: Vector3D) {
+	private calculatePitch(target: Vector3D) {
 		const delta = target.delta(this.position);
 		const result = Math.atan2(Math.abs(delta.z), delta.x);
 		const resultRadian = result * (180 / Math.PI);
@@ -42,7 +42,7 @@ export default class CsgoCamera {
 		return resultRadian;
 	}
 
-	private csgoCameraYaw(target: Vector3D) {
+	private calculateYaw(target: Vector3D) {
 		const delta = target.delta(this.position);
 		const horizontalDistance = Math.sqrt(Math.pow(delta.x, 2) + Math.pow(delta.z, 2));
 		const result = -Math.atan2(Math.abs(delta.y), horizontalDistance);
