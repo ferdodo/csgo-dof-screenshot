@@ -2,6 +2,7 @@ const {app, BrowserWindow, ipcMain, dialog} = require('electron');
 const fs = require('fs');
 const util = require('util');
 const writeFile = util.promisify(fs.writeFile);
+const { homedir } = require("os");
 var ScreenshotsMerger = require("./lib/ScreenshotsMerger.js");
 var WeightedImage = require("./lib/WeightedImage.js");
 
@@ -13,7 +14,14 @@ async function main(){
 	var win = await createWindow();
 	ipcMain.handle('saveScript', saveScript(win));
 	ipcMain.on('mergeScreenshots', mergeScreenshots(win));
+	ipcMain.handle('getDefaultScriptPath', getDefaultScriptPath);
 }
+
+
+async function getDefaultScriptPath(){
+	return `${homedir()}/dof.cfg`;
+}
+
 
 function saveScript(win){
 	return async function(event, payload){

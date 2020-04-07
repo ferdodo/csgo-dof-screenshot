@@ -26,13 +26,14 @@ export default class TestRunner {
 	run(testExecutor: (testRunner: TestRunner) => void) {
 		const testRunner = this;
 
-		return new Promise(async function (resolve) {
+		return new Promise(async function (resolve, reject) {
 			try {
 				await testRunner.appStarted;
 				await testExecutor(testRunner);
 				resolve();
 			} catch (error) {
-				await testRunner.dumpError(error);
+				await testRunner.dumpError();
+				reject(error);
 			}
 		});
 	}
@@ -41,15 +42,15 @@ export default class TestRunner {
 		return this.spectronApp.stop();
 	}
 
-	dumpError(error: Error) {
+	dumpError() {
 		const testRunner = this;
 
-		return new Promise(async function (_, reject) {
+		return new Promise(async function (resolve) {
 			const client = testRunner.spectronApp.client;
 			const logs = await client.getMainProcessLogs();
 			console.log("Log dump:");
 			for (var i = 0; i < logs.length; ++i) console.log(`  - ${logs[i]}`);
-			reject(error);
+			resolve();
 		});
 	}
 }

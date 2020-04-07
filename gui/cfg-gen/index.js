@@ -7,11 +7,11 @@ import CsgoCamera from "../lib/CsgoCamera.ts";
 Vue.component("cfg-gen", {
 	template,
 	data,
-	computed: {
-		script,
-	},
+	mounted,
+	computed: { script },
 	methods: {
 		saveScript,
+		init,
 	},
 });
 
@@ -27,7 +27,31 @@ function data() {
 		bindKey: "I",
 		scriptSaved: false,
 		scriptLocation: "",
+		initialized: false,
 	};
+}
+
+async function mounted() {
+	await this.init();
+	this.initialized = true;
+}
+
+async function init() {
+	var retry = 0;
+
+	while (true) {
+		try {
+			this.scriptLocation = await ipcRenderer.invoke("getDefaultScriptPath");
+			break;
+		} catch (error) {
+			retry++;
+			if (retry > 10) throw error;
+
+			await new Promise(function (resolve) {
+				setTimeout(resolve, 50);
+			});
+		}
+	}
 }
 
 function script() {
