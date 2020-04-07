@@ -23,10 +23,10 @@
 	"license": "MIT",
 	"dependencies": {
 		"@types/node": "^13.11.0",
-		"css-loader": "^3.4.2",
+		"css-loader": "^3.5.1",
 		"file-loader": "^6.0.0",
 		"html-webpack-plugin": "^4.0.4",
-		"jimp": "^0.10.0",
+		"jimp": "^0.10.1",
 		"lodash": "^4.17.15",
 		"raw-loader": "^4.0.0",
 		"selenium-webdriver": "^4.0.0-alpha.7",
@@ -41,7 +41,7 @@
 		"webpack-node-externals": "^1.7.2"
 	},
 	"devDependencies": {
-		"electron": "^8.2.0",
+		"electron": "^8.2.1",
 		"electron-builder": "^22.4.1",
 		"ts-loader": "^6.2.2",
 		"typescript": "^3.8.3"
