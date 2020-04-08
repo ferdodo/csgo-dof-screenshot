@@ -8,85 +8,85 @@
 	src: url("./Goodlight-Light.otf") format("opentype");
 }
 
-body{
+body {
 	background-image: url("bg.jpg");
 	overflow-y: hidden;
 }
 
-body, input, button{
+body, input, button {
 	font-family: goodlightlight;
-	color:  #FFFFFFCC;
+	color: #ffffffcc;
 	font-size: 3mm;
 	letter-spacing: 0.15em;
 }
 
-.title1{
+.title1 {
 	font-family: goodlight;
 	font-size: 1.5em;
 	text-transform: uppercase;
 }
 
-.panel{
+.panel {
 	margin: 5mm;
 	padding: 5mm;
 }
 
-input{
+input {
 	border: none;
 	width: 90%;
 	border: 1px solid transparent;
-	transition: border-color .25s cubic-bezier(0, 0.61, 0.36, 1);
+	transition: border-color 0.25s cubic-bezier(0, 0.61, 0.36, 1);
 }
 
-.underline, .underline + div > input{
-	border-bottom: 1px solid #FFFFFF33;
+.underline, .underline + div > input {
+	border-bottom: 1px solid #ffffff33;
 }
 
-.underline + div>input:focus {
-	border-bottom: 1px solid #FFFFFFCC;
+.underline + div > input:focus {
+	border-bottom: 1px solid #ffffffcc;
 }
 
 input:focus {
 	outline: none;
-	border: 1px solid #FFFFFFCC;
+	border: 1px solid #ffffffcc;
 }
 
 input:invalid {
-	border: 1px solid #FF0000CC;
+	border: 1px solid #ff0000cc;
 }
 
 .underline + div > input:invalid, .underline + div > input:invalid:focus {
-    border-bottom: 1px solid #FF0000CC;
+	border-bottom: 1px solid #ff0000cc;
 }
 
-button{
+button {
 	outline: none;
 	font-family: goodlight;
 	background-color: transparent;
 	border: none;
 	text-transform: uppercase;
-	transition: background-color .5s cubic-bezier(0, 0.61, 0.36, 1);
+	transition: background-color 0.5s cubic-bezier(0, 0.61, 0.36, 1);
 }
 
-input, button, .label{
+input, button, .label {
 	padding: 2mm;
 }
 
-button:focus, button:hover, input, .panel, .loading-container{
+button:focus, button:hover, input, .panel, .loading-container {
 	background-color: #00000033;
 }
 
-.loading-container, .loading, button, input{
+.loading-container, .loading, button, input {
 	border-radius: 2px;
 }
 
-.loading-container{
+.loading-container {
 	height: 20px;
 	width: 100%;
 }
 
-.loading{
-	background-color: #00FF0055;
+.loading {
+	background-color: #00ff0055;
 	width: 50%;
 	height: 100%;
 	transition: width 1s ease;
