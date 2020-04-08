@@ -10,6 +10,7 @@
 
 body{
 	background-image: url("bg.jpg");
+	overflow-y: hidden;
 }
 
 body, input, button{
@@ -30,10 +31,6 @@ body, input, button{
 	padding: 5mm;
 }
 
-.underline{
-	border-bottom: 1px solid #FFFFFF33;
-}
-
 input{
 	border: none;
 	width: 90%;
@@ -41,7 +38,7 @@ input{
 	transition: border-color .25s cubic-bezier(0, 0.61, 0.36, 1);
 }
 
-.underline + div>input {
+.underline, .underline + div > input{
 	border-bottom: 1px solid #FFFFFF33;
 }
 
@@ -56,6 +53,10 @@ input:focus {
 
 input:invalid {
 	border: 1px solid #FF0000CC;
+}
+
+.underline + div > input:invalid, .underline + div > input:invalid:focus {
+    border-bottom: 1px solid #FF0000CC;
 }
 
 button{
