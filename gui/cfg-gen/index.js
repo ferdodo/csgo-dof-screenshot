@@ -11,6 +11,7 @@ Vue.component("cfg-gen", {
 	computed: { script },
 	methods: {
 		saveScript,
+		selectScriptPath,
 		init,
 	},
 });
@@ -34,6 +35,11 @@ function data() {
 async function mounted() {
 	await this.init();
 	this.initialized = true;
+}
+
+async function selectScriptPath() {
+	const newValue = await ipcRenderer.invoke("selectScriptPath");
+	if (newValue) this.scriptLocation = newValue;
 }
 
 async function init() {

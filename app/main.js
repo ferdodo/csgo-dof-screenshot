@@ -11,16 +11,24 @@ main();
 async function main() {
 	await appReady();
 	var win = await createWindow();
-	ipcMain.handle('saveScript', saveScript(win));
-	ipcMain.on('mergeScreenshots', mergeScreenshots(win));
-	ipcMain.handle('getDefaultScriptPath', getDefaultScriptPath);
+	ipcMain.handle("saveScript", saveScript(win));
+	ipcMain.on("mergeScreenshots", mergeScreenshots(win));
+	ipcMain.handle("getDefaultScriptPath", getDefaultScriptPath);
+	ipcMain.handle("selectScriptPath", selectScriptPath(win));
 }
 
-
-async function getDefaultScriptPath(){
+async function getDefaultScriptPath() {
 	return `${homedir()}/dof.cfg`;
 }
 
+function selectScriptPath(win) {
+	return async function (event, payload) {
+		const options = { defaultPath: "dof.cfg" };
+		const saveDialogResult = await dialog.showSaveDialog(win, options);
+		if (saveDialogResult.canceled) return "";
+		return saveDialogResult.filePath;
+	};
+}
 
 function saveScript(win) {
 	return async function (event, payload) {
