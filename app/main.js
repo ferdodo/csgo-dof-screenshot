@@ -12,18 +12,22 @@ async function main() {
 	await appReady();
 	var win = await createWindow();
 	ipcMain.handle("saveScript", saveScript(win));
-	ipcMain.on("mergeScreenshots", mergeScreenshots(win));
-	ipcMain.handle("getDefaultScriptPath", getDefaultScriptPath);
-	ipcMain.handle("selectScriptPath", selectScriptPath(win));
+	ipcMain.handle("mergeScreenshots", mergeScreenshots(win));
+	ipcMain.handle("getDefaultScriptPath", getDefaultPath("dof.cfg"));
+	ipcMain.handle("getDefaultMergedImagePath", getDefaultPath("csgo-dof-screenshot.png"));
+	ipcMain.handle("selectScriptPath", selectPath(win, "dof.cfg"));
+	ipcMain.handle("selectMergedImagePath", selectPath(win, "csgo-dof-screenshot.cfg"));
 }
 
-async function getDefaultScriptPath() {
-	return `${homedir()}/dof.cfg`;
+function getDefaultPath(fileName) {
+	return async function(){
+		return `${homedir()}/${fileName}`;
+	}
 }
 
-function selectScriptPath(win) {
+function selectPath(win, defaultPath) {
 	return async function (event, payload) {
-		const options = { defaultPath: "dof.cfg" };
+		const options = { defaultPath };
 		const saveDialogResult = await dialog.showSaveDialog(win, options);
 		if (saveDialogResult.canceled) return "";
 		return saveDialogResult.filePath;
@@ -37,23 +41,19 @@ function saveScript(win) {
 }
 
 function mergeScreenshots(win) {
-	return async function (event, payload) {
-		var { filePaths, canceled } = await dialog.showOpenDialog(win, {
-			properties: ["openFile", "multiSelections"],
-		});
-		if (canceled) return;
+	return async function (event, {selectedFiles, mergedImageLocation}) {
 		var screenshotsMerger = new ScreenshotsMerger(win);
-		filePaths.map((path) => new WeightedImage(path)).forEach(screenshotsMerger.add, screenshotsMerger);
+		selectedFiles.map((path) => new WeightedImage(path)).forEach(screenshotsMerger.add, screenshotsMerger);
 		var merged = await screenshotsMerger.mergeAll();
 		var data = await util.promisify(fs.readFile)(merged.path);
-		await saveAs(win)(null, { data, options: { defaultPath: "csgo-dof-screenshot.png" } });
+		await util.promisify(fs.writeFile)(mergedImageLocation, data); 
 	};
 }
 
 async function createWindow() {
 	var win = new BrowserWindow({
 		width: 520,
-		height: 605,
+		height: 685,
 		webPreferences: {
 			nodeIntegration: true,
 		},
@@ -74,9 +74,4 @@ function appReady() {
 			resolve();
 		});
 	});
-}
-
-// https://gist.github.com/6174/6062387
-function randomStr() {
-	return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 }

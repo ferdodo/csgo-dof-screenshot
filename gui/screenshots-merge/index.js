@@ -8,15 +8,26 @@ Vue.component("screenshots-merge", {
 	mounted,
 	"methods" : {
 		mergeScreenshots,
-		updateMergeProgress
+		updateMergeProgress,
+		selectFiles,
+		init,
 	}, 
 	"computed" : {
 		eta
 	}
 });
 
+function selectFiles(event){
+	const fileList = event.target.files;
+	const fileListArr = Array.from(fileList);
+	const paths = fileListArr.map(file=>file.path);
+	this.selectedFiles = paths;
+}
+
 async function mounted(){
-	await ipcRenderer.on('mergeProgressUpdate', this.updateMergeProgress);
+	await this.init();
+	this.initialized = true;
+	ipcRenderer.on('mergeProgressUpdate', this.updateMergeProgress);
 }
 
 function updateMergeProgress(event, data){
@@ -27,13 +38,20 @@ function updateMergeProgress(event, data){
 
 function data(){
 	return {
+		"selectedFiles" : [],
 		"mergeProgress" : undefined,
-		"startTime" : undefined
+		"startTime" : undefined,
+		mergedImageLocation: "",
+		initialized: false,
+		mergeSuccess: false,
 	}
 }
 
 async function mergeScreenshots(){
-	var openResult = await ipcRenderer.send('mergeScreenshots');
+	const selectedFiles = this.selectedFiles;
+	const mergedImageLocation = this.mergedImageLocation;
+	await ipcRenderer.invoke('mergeScreenshots', { selectedFiles, mergedImageLocation });
+	this.mergeSuccess = true;
 }
 
 
@@ -63,4 +81,23 @@ function formatDuration(msec_num) {
     if (minutes) result += ` ${minutes} minutes`;
     if (seconds) result += ` ${seconds} seconds`;
     return result;
+}
+
+
+async function init() {
+	var retry = 0;
+
+	while (true) {
+		try {
+			this.mergedImageLocation = await ipcRenderer.invoke("getDefaultMergedImagePath");
+			break;
+		} catch (error) {
+			retry++;
+			if (retry > 10) throw error;
+
+			await new Promise(function (resolve) {
+				setTimeout(resolve, 50);
+			});
+		}
+	}
 }
