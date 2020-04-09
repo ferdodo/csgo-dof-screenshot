@@ -5,52 +5,42 @@ export default class TestRunner {
 	appStarted: Promise<void>;
 
 	constructor() {
-		let path = undefined;
-
-		switch (process.platform) {
-			case "win32":
-				path = "dist/win-unpacked/csgo-dof-screenshot.exe";
-				break;
-			case "linux":
-				path = "dist/linux-unpacked/csgo-dof-screenshot";
-				break;
-			default:
-				throw new Error("Testing is not supported on this platform !");
-		}
-
+		const path = this.getAppPath();
 		const args = ["--no-sandbox", "--headless", "--disable-gpu"];
 		this.spectronApp = new Application({ path, args });
 		this.appStarted = this.spectronApp.start();
 	}
 
-	run(testExecutor: (testRunner: TestRunner) => void) {
-		const testRunner = this;
-
-		return new Promise(async function (resolve, reject) {
-			try {
-				await testRunner.appStarted;
-				await testExecutor(testRunner);
-				resolve();
-			} catch (error) {
-				await testRunner.dumpError();
-				reject(error);
-			}
-		});
+	async run(testExecutor: (testRunner: TestRunner) => void) {
+		try {
+			await this.appStarted;
+			await testExecutor(this);
+		} catch (error) {
+			await this.dumpProcessLogs();
+			throw error;
+		}
 	}
 
-	close(): Promise<void> {
-		return this.spectronApp.stop();
+	async close(){
+		await this.spectronApp.stop();
 	}
 
-	dumpError() {
-		const testRunner = this;
+	async dumpProcessLogs() {
+		const client = this.spectronApp.client;
+		const logs = await client.getMainProcessLogs();
+		console.log("\n\n======= Electron process logs start =======");
+		for (var i = 0; i < logs.length; ++i) console.log(String(logs[i]));
+		console.log("======== Electron process logs end ========\n\n");
+	}
 
-		return new Promise(async function (resolve) {
-			const client = testRunner.spectronApp.client;
-			const logs = await client.getMainProcessLogs();
-			console.log("Log dump:");
-			for (var i = 0; i < logs.length; ++i) console.log(`  - ${logs[i]}`);
-			resolve();
-		});
+	private getAppPath(){
+		switch (process.platform) {
+			case "win32":
+				return "dist/win-unpacked/csgo-dof-screenshot.exe";
+			case "linux":
+				return "dist/linux-unpacked/csgo-dof-screenshot";
+			default:
+				throw new Error("Testing is not supported on this platform !");
+		}
 	}
 }
