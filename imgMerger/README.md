@@ -8,9 +8,7 @@ imgMerger ratio imagePathA imagePathB
 
 ##### DESCRIPTION
 
-Merge two png images together. First image is submitted to standard input. 
-New image comes out of standard output. Ratio is a number defining the
-merging opacity.
+Merge two png images together, new image comes out of standard output.
 
 ##### EXAMPLE
 
