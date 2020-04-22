@@ -8,7 +8,7 @@ export default class TestRunner {
 		const path = this.getAppPath();
 		const args = ["--no-sandbox", "--headless", "--disable-gpu"];
 		this.spectronApp = new Application({ path, args });
-		this.appStarted = this.spectronApp.start();
+		this.appStarted = this.start();
 	}
 
 	async run(testExecutor: (testRunner: TestRunner) => void) {
@@ -19,6 +19,15 @@ export default class TestRunner {
 			await this.dumpProcessLogs();
 			throw error;
 		}
+	}
+
+	private async start(){
+		const testRunner = this;
+
+		await new Promise(function(resolve, reject){
+			setTimeout(reject, 10000, new Error("Application startup timed out !"));
+			testRunner.spectronApp.start().then(resolve, reject);
+		});
 	}
 
 	async close(){
