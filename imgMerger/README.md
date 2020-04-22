@@ -4,7 +4,7 @@ imgMerger
 
 ##### SYNOPSYS
 
-imgMerger ratio imagePathA imagePathB
+	imgMerger ratio imagePathA imagePathB
 
 ##### DESCRIPTION
 
