@@ -1,6 +1,7 @@
 var uuid = require('uuid/v4');
-var Jimp = require("jimp");
-
+var { exec } = require("child_process");
+const path = require('path');
+const { writeFile } = require('fs');
 
 class WeightedImage{
 
@@ -21,17 +22,41 @@ class WeightedImage{
 	}
 }
 
-
 async function _merge(A, B, tempDirectory){
-	var opacity = B.weight / (A.weight + B.weight);
-	var AJimp = await Jimp.read(A.path);
-	var BJimp = await Jimp.read(B.path);
-	BJimp.fade(1-opacity);
-	var jimpMerged = AJimp.blit(BJimp, 0, 0);
-	var newPath = `${tempDirectory}/${uuid()}.png`;
-	await jimpMerged.writeAsync(newPath);
+	const ressourcePath = process.resourcesPath;
+	const imgMergerPath = path.join(ressourcePath, 'imgMerger');
+	const ratio = B.weight / A.weight;
+	const command = `${ imgMergerPath } ${ ratio } ${ A.path } ${ B.path }`
+	const fileBuffer = await execAsyncWrap(command);
+	const newPath = `${tempDirectory}/${uuid()}.png`;
+	await writeFileAsyncWrap(newPath, fileBuffer);
 	return new WeightedImage(newPath, A.weight+B.weight);
 }
 
+function execAsyncWrap(command, options){
+	return new Promise(function(resolve, reject){
+		exec(command, options || {}, function callback(error, stdout, stderr){
+			if (error){
+				const hint = JSON.stringify({ error : String(error), stdout: String(stdout), stderr: String(stderr) }, null, 4);
+				reject(new Error(`Failed to execute command ! ${ hint }`));
+			} else {
+				resolve(stdout);
+			}
+		});
+	});
+}
+
+function writeFileAsyncWrap(file, data){
+	return new Promise(function(resolve, reject){
+		writeFile(file, data, function(err){
+			if (err){
+				const hint = JSON.stringify({ error : String(error) }, null, 4);
+				reject(new Error(`Failed to write file ! ${ hint }`));
+			} else {
+				resolve();
+			}
+		});
+	});
+}
 
 module.exports = WeightedImage;

@@ -1,3 +1,18 @@
+FROM haskell as build-img-merger
+
+
+# cabal dependancies
+RUN cabal update
+RUN cabal install --lib JuicyPixels 
+RUN cabal install --lib vector 
+RUN cabal install --lib conversion 
+
+
+# build imgMerger binaries
+COPY imgMerger /imgMerger
+RUN make -C imgMerger/src
+
+
 FROM circleci/node:latest-browsers
 USER root
 WORKDIR /csgo-dof-screenshot
@@ -23,6 +38,8 @@ RUN rm -r dist
 # build
 COPY app app
 COPY gui gui
+RUN mkdir extraResources
+COPY --from=0 /imgMerger/bin/imgMerger extraResources/imgMerger
 RUN npm run build
 
 
