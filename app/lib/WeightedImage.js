@@ -27,7 +27,7 @@ async function _merge(A, B, tempDirectory){
 	const imgMergerPath = path.join(ressourcePath, 'imgMerger');
 	const ratio = B.weight / A.weight;
 	const command = `${ imgMergerPath } ${ ratio } ${ A.path } ${ B.path }`
-	const fileBuffer = await execAsyncWrap(command);
+	const fileBuffer = await execAsyncWrap(command, {maxBuffer: 1024 * 1000 * 16, encoding: 'base64'});
 	const newPath = `${tempDirectory}/${uuid()}.png`;
 	await writeFileAsyncWrap(newPath, fileBuffer);
 	return new WeightedImage(newPath, A.weight+B.weight);
@@ -37,10 +37,10 @@ function execAsyncWrap(command, options){
 	return new Promise(function(resolve, reject){
 		exec(command, options || {}, function callback(error, stdout, stderr){
 			if (error){
-				const hint = JSON.stringify({ error : String(error), stdout: String(stdout), stderr: String(stderr) }, null, 4);
+				const hint = JSON.stringify({ command, error : String(error), stdout: String(stdout), stderr: String(stderr) }, null, 4);
 				reject(new Error(`Failed to execute command ! ${ hint }`));
 			} else {
-				resolve(stdout);
+				resolve(new Buffer(stdout, 'base64'));
 			}
 		});
 	});
