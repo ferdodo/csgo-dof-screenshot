@@ -3,10 +3,10 @@ import Codec.Picture
 import Codec.Picture.Png
 import Codec.Picture.Types
 import Data.Vector.Storable
-import Data.ByteString as BYTESTRING
-import Data.ByteString.Lazy
+import Data.ByteString as BYTESTRING (readFile)
+import Data.ByteString.Lazy (putStr, ByteString)
 import System.Exit
-
+import System.IO (stderr)
 
 getRatio :: IO Float
 getRatio = do
@@ -26,20 +26,23 @@ getImagePathB = do
     return (args !! 2)
 
 
-getImageA :: IO DynamicImage
+--getImageA :: IO DynamicImage
 getImageA = do
     imagePathA <- getImagePathA
     imageABuffer <- BYTESTRING.readFile imagePathA
-    case (decodePng imageABuffer) of
-        Right img -> return img
+    return (decodePng imageABuffer)
 
 
-getImageB :: IO DynamicImage
+--getImageB :: IO DynamicImage
 getImageB = do
     imagePathB <- getImagePathB
     imageBBuffer <- BYTESTRING.readFile imagePathB
-    case (decodePng imageBBuffer) of
-        Right img -> return img
+    return (decodePng imageBBuffer)
+
+
+fallOverAndDie :: String -> IO a
+fallOverAndDie err = do putStrLn err
+                        exitWith (ExitFailure 1)
 
 
 getWidth :: Image PixelRGBA8 -> Int
@@ -127,7 +130,10 @@ mergeImageToBuffer ratio img1 img2 =
 
 main = do
     ratio <- getRatio
-    imageA <- getImageA
-    imageB <- getImageB
-    let imgBuf = mergeImageToBuffer ratio imageA imageB
-    Data.ByteString.Lazy.putStr imgBuf
+    imageAtry <- getImageA
+    imageBtry <- getImageB
+    case imageAtry of
+        Left errA -> fallOverAndDie errA
+        Right imageA -> case imageBtry of
+            Left errB -> fallOverAndDie errB
+            Right imageB -> Data.ByteString.Lazy.putStr (mergeImageToBuffer ratio imageA imageB)    
