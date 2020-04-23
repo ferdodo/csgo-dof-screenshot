@@ -2,11 +2,11 @@ import System.Environment (getArgs)
 import Codec.Picture
 import Codec.Picture.Png
 import Codec.Picture.Types
-import Data.Vector.Storable
+import Data.Vector.Storable ((!))
 import Data.ByteString as BYTESTRING (readFile)
 import Data.ByteString.Lazy (putStr, ByteString)
 import System.Exit
-import System.IO (stderr)
+import System.IO (stderr, hFlush, stdout)
 
 getRatio :: IO Float
 getRatio = do
@@ -133,7 +133,9 @@ main = do
     imageAtry <- getImageA
     imageBtry <- getImageB
     case imageAtry of
-        Left errA -> fallOverAndDie errA
+        Left errA -> fallOverAndDie ("Failed to read A! " ++ errA)
         Right imageA -> case imageBtry of
-            Left errB -> fallOverAndDie errB
-            Right imageB -> Data.ByteString.Lazy.putStr (mergeImageToBuffer ratio imageA imageB)    
+            Left errB -> fallOverAndDie ("Failed to read B! " ++ errB)
+            Right imageB -> do
+                Data.ByteString.Lazy.putStr (mergeImageToBuffer ratio imageA imageB)   
+                hFlush stdout 
