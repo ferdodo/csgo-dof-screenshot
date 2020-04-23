@@ -25,7 +25,7 @@ class WeightedImage{
 async function _merge(A, B, tempDirectory){
 	const ressourcePath = process.resourcesPath;
 	const imgMergerPath = path.join(ressourcePath, 'imgMerger');
-	const ratio = B.weight / A.weight;
+	const ratio = A.weight / B.weight;
 	const command = `${ imgMergerPath } ${ ratio } ${ A.path } ${ B.path }`
 	const fileBuffer = await execAsyncWrap(command, {maxBuffer: 1024 * 1000 * 16, encoding: 'base64'});
 	const newPath = `${tempDirectory}/${uuid()}.png`;
