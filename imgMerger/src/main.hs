@@ -6,7 +6,7 @@ import Data.Vector.Storable ((!))
 import Data.ByteString as BYTESTRING (readFile)
 import Data.ByteString.Lazy (putStr, ByteString)
 import System.Exit
-import System.IO (stderr, hFlush, stdout)
+import System.IO (stderr)
 
 getRatio :: IO Float
 getRatio = do
@@ -136,6 +136,4 @@ main = do
         Left errA -> fallOverAndDie ("Failed to read A! " ++ errA)
         Right imageA -> case imageBtry of
             Left errB -> fallOverAndDie ("Failed to read B! " ++ errB)
-            Right imageB -> do
-                Data.ByteString.Lazy.putStr (mergeImageToBuffer ratio imageA imageB)   
-                hFlush stdout 
+            Right imageB -> Data.ByteString.Lazy.putStr (mergeImageToBuffer ratio imageA imageB)   
