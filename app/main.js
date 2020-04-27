@@ -5,6 +5,7 @@ const writeFile = util.promisify(fs.writeFile);
 const { homedir } = require("os");
 var ScreenshotsMerger = require("./lib/ScreenshotsMerger.js");
 var WeightedImage = require("./lib/WeightedImage.js");
+const path = require("path");
 
 main();
 
@@ -21,7 +22,10 @@ async function main() {
 
 function getDefaultPath(fileName) {
 	return async function(){
-		return `${homedir()}/${fileName}`;
+		const homeDir = path.resolve(homedir());
+		const jointedPath = path.join(homeDir, fileName);
+		const defaultPath = path.resolve(jointedPath);
+		return defaultPath;
 	}
 }
 
