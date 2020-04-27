@@ -14,7 +14,7 @@ export default async function test(testRunner: TestRunner) {
 	const client = testRunner.spectronApp.client;
 	await client.clearElement("#mergeFilesInput");
 	await client.setValue("#mergeFilesInput", testFiles);
-	const mergedFilePath = "/csgo-dof-screenshot/test/tests/3-merge-screenshots/gray.png";
+	const mergedFilePath = path.resolve(path.join("test", "tests", "3-merge-screenshots", "gray.png"));
 	await setInput(testRunner, "#inputMergedImagePath", mergedFilePath);
 	await testRunner.spectronApp.client.click("#buttonMergeScreenshots");
 	var retry = 0;
@@ -30,7 +30,7 @@ export default async function test(testRunner: TestRunner) {
 		}
 	}
 
-	const bitmapFilePath = "/csgo-dof-screenshot/test/tests/3-merge-screenshots/gray.bmp";
+	const bitmapFilePath = path.resolve(path.join("test", "tests", "3-merge-screenshots", "gray.bmp"));
 	execSync(`convert "${mergedFilePath}" -type truecolor "${bitmapFilePath}"`);
 	const fileBuffer = readFileSync(bitmapFilePath);
 	const fileIntArray = fileBuffer.toJSON().data;
