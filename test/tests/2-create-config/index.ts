@@ -4,7 +4,7 @@ const { readFileSync } = require("fs");
 const { random } = require("lodash");
 
 export default async function test(testRunner: TestRunner) {
-	const scriptFilePath = "/csgo-dof-screenshot/dof.cfg";
+	const scriptFilePath = getScriptFilePath();
 	const minPos = -100000;
 	const maxPos = 100000;
 	await setInput(testRunner, "#inputCameraX", random(minPos, maxPos));
@@ -30,5 +30,17 @@ export default async function test(testRunner: TestRunner) {
 
 	if (!re.test(sample)) {
 		throw new Error("Sample doesn't match regular expression !");
+	}
+}
+
+
+function getScriptFilePath(){
+	switch (process.platform) {
+		case "win32":
+			return "C:\\Users\\runneradmin\\dof.cfg";
+		case "linux":
+			return "/csgo-dof-screenshot/dof.cfg";
+		default:
+			throw new Error("Testing is not supported on this platform !");
 	}
 }
