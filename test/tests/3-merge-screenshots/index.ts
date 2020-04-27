@@ -2,13 +2,14 @@ import TestRunner from "../../lib/TestRunner.ts";
 import { setInput } from "../../lib/TestUtils.ts";
 const { readFileSync } = require("fs");
 const { execSync } = require("child_process");
+const path = require("path");
 
 export default async function test(testRunner: TestRunner) {
-	const testFiles = [
-		"/csgo-dof-screenshot/test/tests/3-merge-screenshots/blue.png",
-		"/csgo-dof-screenshot/test/tests/3-merge-screenshots/green.png",
-		"/csgo-dof-screenshot/test/tests/3-merge-screenshots/red.png",
-	].join(" \n ");
+	const testFiles = ["blue", "green", "red"]
+		.map(o=>o+".png")
+		.map(o=>path.join("test", "tests", "3-merge-screenshots", o))
+		.map(o=>path.resolve(o))
+		.join(" \n ");
 
 	const client = testRunner.spectronApp.client;
 	await client.clearElement("#mergeFilesInput");
