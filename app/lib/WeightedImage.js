@@ -1,5 +1,5 @@
 var uuid = require('uuid/v4');
-var { exec } = require("child_process");
+var { execFile } = require("child_process");
 const path = require('path');
 const { writeFile } = require('fs');
 
@@ -26,24 +26,21 @@ async function _merge(A, B, tempDirectory){
 	const ressourcePath = process.resourcesPath;
 	const imgMergerPath = path.join(ressourcePath, 'imgMerger');
 	const ratio = A.weight / B.weight;
-	const command = `${ imgMergerPath } ${ ratio } ${ A.path } ${ B.path }`
-	const fileBuffer = await execAsyncWrap(command, {maxBuffer: 1024 * 1000 * 16, encoding: 'base64'});
-	const newPath = `${tempDirectory}/${uuid()}.png`;
-	await writeFileAsyncWrap(newPath, fileBuffer);
-	return new WeightedImage(newPath, A.weight+B.weight);
-}
 
-function execAsyncWrap(command, options){
-	return new Promise(function(resolve, reject){
-		exec(command, options || {}, function callback(error, stdout, stderr){
+	const fileBuffer = await new Promise(function(resolve, reject){
+		execFile(imgMergerPath, [ratio, A.path, B.path], {maxBuffer: 1024 * 1000 * 16, encoding: 'base64'}, function callback(error, stdout, stderr){
 			if (error){
-				const hint = JSON.stringify({ command, error : String(error), stdout: String(stdout), stderr: String(stderr) }, null, 4);
+				const hint = JSON.stringify({ imgMergerPath, error : String(error), stdout: String(stdout), stderr: String(stderr) }, null, 4);
 				reject(new Error(`Failed to execute command ! ${ hint }`));
 			} else {
 				resolve(new Buffer(stdout, 'base64'));
 			}
 		});
 	});
+
+	const newPath = `${tempDirectory}/${uuid()}.png`;
+	await writeFileAsyncWrap(newPath, fileBuffer);
+	return new WeightedImage(newPath, A.weight+B.weight);
 }
 
 function writeFileAsyncWrap(file, data){
