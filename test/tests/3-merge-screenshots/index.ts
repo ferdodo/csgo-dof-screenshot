@@ -1,8 +1,9 @@
 import TestRunner from "../../lib/TestRunner.ts";
 import { setInput } from "../../lib/TestUtils.ts";
 const { readFileSync } = require("fs");
-const { execSync } = require("child_process");
 const path = require("path");
+const Jimp = require("jimp");
+const { accessSync, constants:fsConstants } = require('fs');
 
 export default async function test(testRunner: TestRunner) {
 	const testFiles = ["blue", "green", "red"]
@@ -31,7 +32,22 @@ export default async function test(testRunner: TestRunner) {
 	}
 
 	const bitmapFilePath = path.resolve(path.join("test", "tests", "3-merge-screenshots", "gray.bmp"));
-	execSync(`convert "${mergedFilePath}" -type truecolor "${bitmapFilePath}"`);
+	const img = await Jimp.read(mergedFilePath);
+	await img.write(bitmapFilePath);
+
+	var retry = 0;
+
+	while (true) {
+		try {
+			accessSync(bitmapFilePath, fsConstants.R_OK);
+			break;
+		} catch (error) {
+			retry++;
+			if (retry > 10) throw error;
+			await new Promise((resolve) => setTimeout(resolve, 1000));
+		}
+	}
+
 	const fileBuffer = readFileSync(bitmapFilePath);
 	const fileIntArray = fileBuffer.toJSON().data;
 	const pixelSample = fileIntArray.slice(700, 705);
