@@ -1,0 +1,22 @@
+name: test-windows
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-go@v2
+    - run: make -C imgMerger/src
+    - uses: actions/setup-node@v1
+    - run: npm install
+    - run: mkdir extraResources
+    - run: cp imgMerger/bin/imgMerger extraResources/imgMerger
+    - run: npm run build
+    - run: npm run build-test
+    - run: npm run test
