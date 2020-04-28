@@ -17,7 +17,20 @@ export default async function test(testRunner: TestRunner) {
 	await setInput(testRunner, "#inputKeyBind", "o");
 	await setInput(testRunner, "#inputScriptLocation", scriptFilePath);
 	await testRunner.spectronApp.client.click("#buttonSaveScript");
-	await testRunner.spectronApp.client.getValue("#displaySaveScriptDone");
+
+	var retry = 0;
+
+	while (true) {
+		try {
+			await testRunner.spectronApp.client.getValue("#displaySaveScriptDone");
+			break;
+		} catch (error) {
+			retry++;
+			if (retry > 10) throw error;
+			await new Promise((resolve) => setTimeout(resolve, 1000));
+		}
+	}
+
 	const scriptBuffer = readFileSync(scriptFilePath);
 	const script = scriptBuffer.toString();
 
