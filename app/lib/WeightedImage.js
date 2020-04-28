@@ -1,7 +1,7 @@
 var uuid = require('uuid/v4');
 var { execFile } = require("child_process");
 const path = require('path');
-const { writeFile } = require('fs');
+const { writeFile, accessSync, constants:fsConstants } = require('fs');
 
 class WeightedImage{
 
@@ -23,8 +23,7 @@ class WeightedImage{
 }
 
 async function _merge(A, B, tempDirectory){
-	const ressourcePath = process.resourcesPath;
-	const imgMergerPath = path.join(ressourcePath, 'imgMerger');
+	const imgMergerPath = getImgMergerPath();
 	const ratio = A.weight / B.weight;
 
 	const fileBuffer = await new Promise(function(resolve, reject){
@@ -42,6 +41,24 @@ async function _merge(A, B, tempDirectory){
 	await writeFileAsyncWrap(newPath, fileBuffer);
 	return new WeightedImage(newPath, A.weight+B.weight);
 }
+
+function getImgMergerPath(){
+	const caseA = path.resolve(path.join(__dirname, '..', '..', 'imgMerger', 'bin', 'imgMerger'));
+	const caseB = path.join(process.resourcesPath, 'imgMerger');
+
+	try{
+		accessSync(caseA, fsConstants.X_OK);
+		return caseA;
+	} catch(error){
+		try{
+			accessSync(caseB, fsConstants.X_OK);
+			return caseB;
+		} catch(error){
+			throw `Failed to get imgMerger path ! \n ${error.message + error.stack || error}`
+		}
+	}
+}
+
 
 function writeFileAsyncWrap(file, data){
 	return new Promise(function(resolve, reject){
