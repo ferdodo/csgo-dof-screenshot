@@ -11,10 +11,12 @@
 	},
 	"build": {
 		"win": {
-			"target": "portable"
+			"target": "portable",
+			"artifactName": "${name}.exe"
 		},
 		"linux": {
-			"target": "AppImage"
+			"target": "AppImage",
+			"artifactName": "${name}.appImage"
 		},
 		"extraResources": [
 			{
