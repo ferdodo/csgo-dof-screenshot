@@ -1,4 +1,4 @@
-var uuid = require('uuid/v4');
+const { v4: uuidv4 } = require('uuid');
 var { execFile } = require("child_process");
 const path = require('path');
 const { writeFile, accessSync, constants:fsConstants } = require('fs');
@@ -6,7 +6,7 @@ const { writeFile, accessSync, constants:fsConstants } = require('fs');
 class WeightedImage{
 
 	constructor(path, weight){
-		this.id = uuid();
+		this.id = uuidv4();
 		this.path = String(path);
 		this.weight = Number(weight || 1);
 	}
@@ -37,7 +37,7 @@ async function _merge(A, B, tempDirectory){
 		});
 	});
 
-	const newPath = `${tempDirectory}/${uuid()}.png`;
+	const newPath = `${tempDirectory}/${uuidv4()}.png`;
 	await writeFileAsyncWrap(newPath, fileBuffer);
 	return new WeightedImage(newPath, A.weight+B.weight);
 }
