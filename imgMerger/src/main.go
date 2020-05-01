@@ -16,6 +16,12 @@ func main() {
     imageAPath := os.Args[2]
     imageBPath := os.Args[3]
     imageAIOReader, err := os.Open(imageAPath)
+
+    if err != nil {
+        fmt.Println(err)
+        os.Exit(-1)
+    }
+
     imageBIOReader, err := os.Open(imageBPath)
 
     if err != nil {
@@ -51,7 +57,7 @@ func main() {
     err2 := png.Encode(os.Stdout, rgba)
 
     if err2 != nil {
-        fmt.Println(err)
+        fmt.Println(err2)
         os.Exit(-1)
     }
 }
