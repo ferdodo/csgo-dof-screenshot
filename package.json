@@ -39,7 +39,7 @@
 		"@types/node": "^13.13.4",
 		"css-loader": "^3.5.3",
 		"file-loader": "^6.0.0",
-		"html-webpack-plugin": "^4.2.2",
+		"html-webpack-plugin": "^4.3.0",
 		"lodash": "^4.17.15",
 		"raw-loader": "^4.0.1",
 		"selenium-webdriver": "^4.0.0-alpha.7",
@@ -54,7 +54,7 @@
 		"webpack-node-externals": "^1.7.2"
 	},
 	"devDependencies": {
-		"electron": "^8.2.4",
+		"electron": "^8.2.5",
 		"electron-builder": "^22.6.0",
 		"jimp": "^0.10.3",
 		"ts-loader": "^7.0.2",
