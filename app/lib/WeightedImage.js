@@ -14,7 +14,7 @@ class WeightedImage{
 	findClosest(screenshotsMerger){
 		var images = screenshotsMerger.images.filter(image=>this.id!=image.id);
 		var weight = this.weight;
-		return images.sort((a, b)=>Math.abs(weight-b)>Math.abs(weight-a)).pop();
+		return images.sort((a, b)=>Math.abs(weight-b.weight)-Math.abs(weight-a.weight)).pop();
 	}
 
 	merge(image, tempDirectory){
