@@ -29,7 +29,13 @@ async function _merge(A, B, tempDirectory){
 	const fileBuffer = await new Promise(function(resolve, reject){
 		execFile(imgMergerPath, [ratio, A.path, B.path], {maxBuffer: 1024 * 1000 * 16, encoding: 'base64'}, function callback(error, stdout, stderr){
 			if (error){
-				const hint = JSON.stringify({ imgMergerPath, error : String(error), stdout: String(stdout), stderr: String(stderr) }, null, 4);
+				const hint = JSON.stringify({ 
+					imgMergerPath, 
+					error,
+					stdout: new Buffer(stdout, 'base64').toString(),
+					stderr: new Buffer(stderr, 'base64').toString()
+				}, null, 4);
+
 				reject(new Error(`Failed to execute command ! ${ hint }`));
 			} else {
 				resolve(new Buffer(stdout, 'base64'));
