@@ -8,6 +8,7 @@ import (
     "image/draw"
     "image/color"
     "image/png"
+    _ "image/jpeg"
     "strconv"
 )
 
@@ -29,8 +30,20 @@ func main() {
         os.Exit(-1)
     }
 
-    imageA, err := png.Decode(imageAIOReader)
-    imageB, err := png.Decode(imageBIOReader)
+    imageA, _, err := image.Decode(imageAIOReader)
+
+    if err != nil {
+        fmt.Println(err)
+        os.Exit(-1)
+    }
+
+    imageB, _, err := image.Decode(imageBIOReader)
+
+    if err != nil {
+        fmt.Println(err)
+        os.Exit(-1)
+    }
+
     ratioArg := os.Args[1]
 
     ratio, err := strconv.ParseFloat(ratioArg, 32)
