@@ -92,3 +92,13 @@ button:focus, button:hover, input, .panel, .loading-container {
 	transition: width 1s ease;
 	white-space: nowrap;
 }
+
+
+.fadeInAnimation{
+	animation: fadeIn 1s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+      to { opacity: 1; }
+}

@@ -55,6 +55,7 @@ async function selectMergedImagePath(){
 
 
 async function mergeScreenshots() {
+	this.mergeSuccess = false;
 	const selectedFiles = this.selectedFiles;
 	const mergedImageLocation = this.mergedImageLocation;
 	await ipcRenderer.invoke("mergeScreenshots", { selectedFiles, mergedImageLocation });

@@ -33,5 +33,5 @@
 	<br />
 	<button id="buttonSaveScript" v-on:click="saveScript"> Save file </button>
 	<span id="displaySaveScriptPending" v-if="scriptSaved === 'penging'"> loading </span>
-	<span id="displaySaveScriptDone" v-if="scriptSaved === true"> Successfully created config file. </span>
+	<span id="displaySaveScriptDone" class="fadeInAnimation" v-if="scriptSaved === true">  Done. ✅  </span>
 </div>

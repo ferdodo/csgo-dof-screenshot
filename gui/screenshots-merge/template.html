@@ -6,7 +6,7 @@
 
 	<br />
 	<button id="buttonMergeScreenshots" v-if="!mergeProgress" v-on:click="mergeScreenshots"> Merge screenshots </button>
-	<span id="displayMergeSuccess" v-if="mergeSuccess"> Succesfully merged screenshots. </span>
+	<span id="displayMergeSuccess" class="fadeInAnimation" v-if="mergeSuccess"> Done. ✅ </span>
 
 	<div v-if="mergeProgress" class="loading-container">
 		<div class="loading" v-bind:style="'width:'+mergeProgress+'%'"> {{ eta }} </div>
