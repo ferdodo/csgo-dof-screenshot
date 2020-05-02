@@ -17,7 +17,7 @@ async function main() {
 	ipcMain.handle("getDefaultScriptPath", getDefaultPath("dof.cfg"));
 	ipcMain.handle("getDefaultMergedImagePath", getDefaultPath("csgo-dof-screenshot.png"));
 	ipcMain.handle("selectScriptPath", selectPath(win, "dof.cfg"));
-	ipcMain.handle("selectMergedImagePath", selectPath(win, "csgo-dof-screenshot.cfg"));
+	ipcMain.handle("selectMergedImagePath", selectPath(win, "csgo-dof-screenshot.png"));
 }
 
 function getDefaultPath(fileName) {

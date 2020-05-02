@@ -11,6 +11,7 @@ Vue.component("screenshots-merge", {
 		updateMergeProgress,
 		selectFiles,
 		init,
+		selectMergedImagePath,
 	},
 	computed: {
 		eta,
@@ -46,6 +47,12 @@ function data() {
 		mergeSuccess: false,
 	};
 }
+
+
+async function selectMergedImagePath(){
+	this.mergedImageLocation = await ipcRenderer.invoke("selectMergedImagePath");
+}
+
 
 async function mergeScreenshots() {
 	const selectedFiles = this.selectedFiles;

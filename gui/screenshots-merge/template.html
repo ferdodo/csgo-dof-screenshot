@@ -1,7 +1,7 @@
 <div class="panel" v-if="initialized">
 	<div>
 		<input id="mergeFilesInput" type="file" multiple v-on:change="selectFiles" />
-		<input id="inputMergedImagePath" v-model="mergedImageLocation" />
+		<input id="inputMergedImagePath" v-model="mergedImageLocation" v-on:click="selectMergedImagePath" />
 	</div>
 
 	<br />
