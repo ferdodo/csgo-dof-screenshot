@@ -39,8 +39,6 @@ async function _mergeAll(screenshotsMerger){
 
 function getInstanceStarter(screenshotsMerger, mergeProgressSender){
 	return async function startMergeInstance(){
-		var mergeProgressSender = new MergeProgressSender(screenshotsMerger.images.length, screenshotsMerger.win);
-
 		while (screenshotsMerger.images.length > 1){
 			var {a,b} = screenshotsMerger.images.map(function (image){
 				var a = image;

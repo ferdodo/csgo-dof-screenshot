@@ -8,8 +8,7 @@ class MergeProgressSender{
 	}
 
 	sendProgress(){
-		this.total++;
-		this.processed += 2;
+		this.processed += 1;
 		var progress = (this.processed / this.total) * 100;
 		this.win.webContents.send("mergeProgressUpdate", progress);
 	}
