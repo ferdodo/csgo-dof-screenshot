@@ -4,13 +4,19 @@ import Vue from "vue";
 
 Vue.component("screenshots-merge", {
 	template,
-	data,
+	data: () => ({
+		selectedFiles: [],
+		mergeProgress: undefined,
+		startTime: undefined,
+		mergedImageLocation: "",
+		ready: false,
+		mergeSuccess: false,
+	}),
 	mounted,
 	methods: {
 		mergeScreenshots,
 		updateMergeProgress,
 		selectFiles,
-		init,
 		selectMergedImagePath,
 	},
 	computed: {
@@ -26,9 +32,9 @@ function selectFiles(event) {
 }
 
 async function mounted() {
-	await this.init();
-	this.initialized = true;
+	this.mergedImageLocation = await ipcRenderer.invoke("getDefaultMergedImagePath");
 	ipcRenderer.on("mergeProgressUpdate", this.updateMergeProgress);
+	this.ready = true;
 }
 
 function updateMergeProgress(event, data) {
@@ -37,22 +43,9 @@ function updateMergeProgress(event, data) {
 	this.mergeProgress = data;
 }
 
-function data() {
-	return {
-		selectedFiles: [],
-		mergeProgress: undefined,
-		startTime: undefined,
-		mergedImageLocation: "",
-		initialized: false,
-		mergeSuccess: false,
-	};
-}
-
-
-async function selectMergedImagePath(){
+async function selectMergedImagePath() {
 	this.mergedImageLocation = await ipcRenderer.invoke("selectMergedImagePath");
 }
-
 
 async function mergeScreenshots() {
 	this.mergeSuccess = false;
@@ -87,22 +80,4 @@ function formatDuration(msec_num) {
 	if (minutes) result += ` ${minutes} minutes`;
 	if (seconds) result += ` ${seconds} seconds`;
 	return result;
-}
-
-async function init() {
-	var retry = 0;
-
-	while (true) {
-		try {
-			this.mergedImageLocation = await ipcRenderer.invoke("getDefaultMergedImagePath");
-			break;
-		} catch (error) {
-			retry++;
-			if (retry > 10) throw error;
-
-			await new Promise(function (resolve) {
-				setTimeout(resolve, 50);
-			});
-		}
-	}
 }

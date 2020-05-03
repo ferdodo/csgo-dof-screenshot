@@ -7,26 +7,30 @@ var ScreenshotsMerger = require("./lib/ScreenshotsMerger.js");
 var WeightedImage = require("./lib/WeightedImage.js");
 const path = require("path");
 
-main();
-
-async function main() {
-	await appReady();
-	var win = await createWindow();
-	ipcMain.handle("saveScript", saveScript(win));
-	ipcMain.handle("mergeScreenshots", mergeScreenshots(win));
-	ipcMain.handle("getDefaultScriptPath", getDefaultPath("dof.cfg"));
-	ipcMain.handle("getDefaultMergedImagePath", getDefaultPath("csgo-dof-screenshot.png"));
-	ipcMain.handle("selectScriptPath", selectPath(win, "dof.cfg"));
-	ipcMain.handle("selectMergedImagePath", selectPath(win, "csgo-dof-screenshot.png"));
-}
+(async function main() {
+	try {
+		app.allowRendererProcessReuse = false;
+		await appReady();
+		ipcMain.handle("getDefaultScriptPath", getDefaultPath("dof.cfg"));
+		ipcMain.handle("getDefaultMergedImagePath", getDefaultPath("csgo-dof-screenshot.png"));
+		var win = await createWindow();
+		ipcMain.handle("saveScript", saveScript(win));
+		ipcMain.handle("mergeScreenshots", mergeScreenshots(win));
+		ipcMain.handle("selectScriptPath", selectPath(win, "dof.cfg"));
+		ipcMain.handle("selectMergedImagePath", selectPath(win, "csgo-dof-screenshot.png"));
+	} catch (error) {
+		console.error(error);
+		process.exit(-1);
+	}
+})();
 
 function getDefaultPath(fileName) {
-	return async function(){
+	return async function () {
 		const homeDir = path.resolve(homedir());
 		const jointedPath = path.join(homeDir, fileName);
 		const defaultPath = path.resolve(jointedPath);
 		return defaultPath;
-	}
+	};
 }
 
 function selectPath(win, defaultPath) {
@@ -45,12 +49,12 @@ function saveScript(win) {
 }
 
 function mergeScreenshots(win) {
-	return async function (event, {selectedFiles, mergedImageLocation}) {
+	return async function (event, { selectedFiles, mergedImageLocation }) {
 		var screenshotsMerger = new ScreenshotsMerger(win);
 		selectedFiles.map((path) => new WeightedImage(path)).forEach(screenshotsMerger.add, screenshotsMerger);
 		var merged = await screenshotsMerger.mergeAll();
 		var data = await util.promisify(fs.readFile)(merged.path);
-		await util.promisify(fs.writeFile)(mergedImageLocation, data); 
+		await util.promisify(fs.writeFile)(mergedImageLocation, data);
 	};
 }
 
@@ -64,7 +68,7 @@ async function createWindow() {
 	});
 
 	win.setMenuBarVisibility(false);
-	win.setResizable(false);
+	win.rezisable = false;
 	await win.loadFile("gui/dist/index.html");
 	return win;
 }
