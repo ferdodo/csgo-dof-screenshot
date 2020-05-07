@@ -1,7 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const nodeExternals = require("webpack-node-externals");
-const externals = nodeExternals({ modulesDir: "../node_modules" });
 
 module.exports = {
 	mode: "development",
