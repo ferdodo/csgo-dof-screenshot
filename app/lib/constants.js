@@ -1,12 +1,13 @@
 const path = require("path");
 const { accessSync, constants: fsConstants } = require("fs");
+const { app } = require("electron");
 
 module.exports = {
 	imgMergerPath: getImgMergerPath(),
 };
 
 function getImgMergerPath() {
-	const caseA = path.resolve(path.join(__dirname, "..", "..", "imgMerger", "bin", "imgMerger"));
+	const caseA = path.resolve(path.join(app.getAppPath(), "imgMerger", "bin", "imgMerger"));
 	const caseB = path.join(process.resourcesPath, "imgMerger");
 
 	try {
