@@ -36,7 +36,7 @@
 	"author": "Thomas Riffard",
 	"license": "MIT",
 	"dependencies": {
-		"@types/node": "^13.13.4",
+		"@types/node": "^13.13.5",
 		"css-loader": "^3.5.3",
 		"file-loader": "^6.0.0",
 		"html-webpack-plugin": "^4.3.0",
@@ -57,7 +57,7 @@
 		"electron": "^8.2.5",
 		"electron-builder": "^22.6.0",
 		"jimp": "^0.10.3",
-		"ts-loader": "^7.0.2",
+		"ts-loader": "^7.0.3",
 		"typescript": "^3.8.3"
 	}
 }
