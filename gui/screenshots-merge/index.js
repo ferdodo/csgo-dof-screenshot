@@ -1,6 +1,7 @@
 import template from "./template.html";
 import { ipcRenderer } from "electron";
 import Vue from "vue";
+import { formatEta } from "./util.ts";
 
 Vue.component("screenshots-merge", {
 	template,
@@ -56,30 +57,5 @@ async function mergeScreenshots() {
 }
 
 function eta() {
-	if (!this.startTime) return "";
-	if (!this.mergeProgress) return "";
-	const timeElaspedSinceStart = Date.now() - this.startTime.getTime();
-	if (timeElaspedSinceStart < 5000) return "";
-	const totalEstimatedTaskTime = timeElaspedSinceStart + timeElaspedSinceStart * (100 / this.mergeProgress);
-	const etaMilliSeconds = totalEstimatedTaskTime * ((100 - this.mergeProgress) / 100);
-	if (etaMilliSeconds < 5000) return "";
-	return formatDuration(etaMilliSeconds);
-}
-
-function formatDuration(msec_num) {
-	const sec_num = msec_num / 1000;
-	const hours_num = Math.floor(sec_num / 3600);
-	const minutes_num = Math.floor((sec_num - hours_num * 3600) / 60);
-	const seconds_num = Math.floor(sec_num - hours_num * 3600 - minutes_num * 60);
-	const hours = padTime(hours_num, 24, "hours");
-	const minutes = padTime(minutes_num, 60, "minutes");
-	const seconds = padTime(seconds_num, 60, "seconds");
-	return `${hours} ${minutes} ${seconds}`;
-}
-
-function padTime(x, bound, label) {
-	if (x >= bound || x < 0) throw new Error("Value out of bonds !");
-	if (!x) return "";
-	if (x < 10) return `0${x} ${label}`;
-	return String(x);
+	return formatEta(this.startTime, this.mergeProgress);
 }

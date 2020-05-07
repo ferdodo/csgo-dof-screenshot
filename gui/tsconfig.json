@@ -3,6 +3,7 @@
 		"strict": true,
 		"target": "es5",
 		"noUnusedLocals": true,
-		"noUnusedParameters": true
+		"noUnusedParameters": true,
+		"noImplicitReturns": true
 	}
 }
