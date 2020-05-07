@@ -37,7 +37,7 @@ async function mounted() {
 	this.ready = true;
 }
 
-function updateMergeProgress(event, data) {
+function updateMergeProgress(_, data) {
 	if (!this.startTime && data) this.startTime = new Date();
 	if (!data) this.startTime = undefined;
 	this.mergeProgress = data;
@@ -56,28 +56,30 @@ async function mergeScreenshots() {
 }
 
 function eta() {
-	if (!this.startTime) return;
-	if (!this.mergeProgress) return;
+	if (!this.startTime) return "";
+	if (!this.mergeProgress) return "";
 	const timeElaspedSinceStart = Date.now() - this.startTime.getTime();
-	if (timeElaspedSinceStart < 5000) return;
-	const totalTime = timeElaspedSinceStart + timeElaspedSinceStart * (100 / this.mergeProgress);
-	const etaMilliSeconds = totalTime * ((100 - this.mergeProgress) / 100);
-	if (etaMilliSeconds < 5000) return;
+	if (timeElaspedSinceStart < 5000) return "";
+	const totalEstimatedTaskTime = timeElaspedSinceStart + timeElaspedSinceStart * (100 / this.mergeProgress);
+	const etaMilliSeconds = totalEstimatedTaskTime * ((100 - this.mergeProgress) / 100);
+	if (etaMilliSeconds < 5000) return "";
 	return formatDuration(etaMilliSeconds);
 }
 
-// https://stackoverflow.com/questions/6312993/javascript-seconds-to-time-string-with-format-hhmmss
 function formatDuration(msec_num) {
-	var sec_num = msec_num / 1000;
-	var hours = Math.floor(sec_num / 3600);
-	var minutes = Math.floor((sec_num - hours * 3600) / 60);
-	var seconds = Math.floor(sec_num - hours * 3600 - minutes * 60);
-	if (hours < 10 && hours > 0) hours = "0" + hours;
-	if (minutes < 10 && minutes > 0) minutes = "0" + minutes;
-	if (seconds < 10 && seconds > 0) seconds = "0" + seconds;
-	var result = "";
-	if (hours) result += ` ${hours} hours`;
-	if (minutes) result += ` ${minutes} minutes`;
-	if (seconds) result += ` ${seconds} seconds`;
-	return result;
+	const sec_num = msec_num / 1000;
+	const hours_num = Math.floor(sec_num / 3600);
+	const minutes_num = Math.floor((sec_num - hours_num * 3600) / 60);
+	const seconds_num = Math.floor(sec_num - hours_num * 3600 - minutes_num * 60);
+	const hours = padTime(hours_num, 24, "hours");
+	const minutes = padTime(minutes_num, 60, "minutes");
+	const seconds = padTime(seconds_num, 60, "seconds");
+	return `${hours} ${minutes} ${seconds}`;
+}
+
+function padTime(x, bound, label) {
+	if (x >= bound || x < 0) throw new Error("Value out of bonds !");
+	if (!x) return "";
+	if (x < 10) return `0${x} ${label}`;
+	return String(x);
 }
