@@ -4,7 +4,8 @@
 	"description": "This is a tool that helps to create screenshot with deep of field effect in Counter Strike Global Offensive.",
 	"main": "app/main.js",
 	"scripts": {
-		"build-0": "cd gui && webpack",
+		"build-1": "cd app && webpack",
+		"build-0": "npm run build-1 && cd gui && webpack",
 		"build": "npm run build-0 && electron-builder",
 		"build-test": "cd test && webpack",
 		"test": "node test"
