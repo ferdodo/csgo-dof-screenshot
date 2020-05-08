@@ -3,7 +3,7 @@ const fs = require("fs");
 const util = require("util");
 const writeFile = util.promisify(fs.writeFile);
 const { homedir } = require("os");
-var ScreenshotsMerger = require("./lib/ScreenshotsMerger.js");
+import ScreenshotsMerger from "./lib/ScreenshotsMerger.ts";
 import WeightedImage from "./lib/WeightedImage.ts";
 const path = require("path");
 
