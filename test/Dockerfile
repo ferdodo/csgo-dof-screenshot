@@ -20,17 +20,17 @@ RUN date +%s | xargs test 1595789923 -gt || npm audit
 
 
 # do a first build to prevent electron-builder 'download' stage during  the actual build
-WORKDIR /csgo-dof-screenshot/app
+WORKDIR /csgo-dof-screenshot/electron-main
 RUN wget -q https://raw.githubusercontent.com/electron/electron-quick-start/master/main.js
 WORKDIR /csgo-dof-screenshot
 RUN npx electron-builder
-RUN rm -r app
+RUN rm -r electron-main
 RUN rm -r dist
 
 
 # build
-COPY app app
-COPY gui gui
+COPY electron-main electron-main
+COPY electron-renderer electron-renderer
 RUN mkdir extraResources
 COPY --from=0 /imgMerger/bin/imgMerger extraResources/imgMerger
 RUN npm run build

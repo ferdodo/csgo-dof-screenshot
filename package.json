@@ -1,11 +1,11 @@
 {
 	"name": "csgo-dof-screenshot",
-	"version": "0.1.4",
+	"version": "0.1.5",
 	"description": "This is a tool that helps to create screenshot with deep of field effect in Counter Strike Global Offensive.",
-	"main": "app/main.js",
+	"main": "electron-main/main.js",
 	"scripts": {
-		"build-1": "cd app && webpack",
-		"build-0": "npm run build-1 && cd gui && webpack",
+		"build-1": "cd electron-main && webpack",
+		"build-0": "npm run build-1 && cd electron-renderer && webpack",
 		"build": "npm run build-0 && electron-builder",
 		"build-test": "cd test && webpack",
 		"test": "node test"
