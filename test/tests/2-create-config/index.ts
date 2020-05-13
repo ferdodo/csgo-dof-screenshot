@@ -13,7 +13,7 @@ export default async function test(testRunner: TestRunner) {
 	await setInput(testRunner, "#inputTargetX", random(minPos, maxPos));
 	await setInput(testRunner, "#inputTargetY", random(minPos, maxPos));
 	await setInput(testRunner, "#inputTargetZ", random(minPos, maxPos));
-	await setInput(testRunner, "#inputDofStrength", random(-3000, 3000));
+	await setInput(testRunner, "#inputDofStrength", random(0, 3000));
 	await setInput(testRunner, "#inputKeyBind", "o");
 	await setInput(testRunner, "#inputScriptLocation", scriptFilePath);
 	await testRunner.spectronApp.client.click("#buttonSaveScript");
