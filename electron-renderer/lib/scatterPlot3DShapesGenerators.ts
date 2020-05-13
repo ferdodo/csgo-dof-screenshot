@@ -37,8 +37,8 @@ export function* createProgressiveSphereGenerator(position: Vector3D): Generator
 export function* createDiscGenerator(position: Vector3D, target: Vector3D, diameter: number): Generator<Vector3D, Vector3D, Vector3D> {
 	const sphereGenerator = createSphereGenerator(position, diameter);
 	const distanceToTarget = position.distanceTo(target);
-	const distanceToTargetMax = distanceToTarget * 1.01;
-	const distanceToTargetMin = distanceToTarget * 0.99;
+	const distanceToTargetMax = distanceToTarget + diameter * 0.01;
+	const distanceToTargetMin = distanceToTarget - diameter * 0.99;
 
 	while (true) {
 		var vector = sphereGenerator.next().value;

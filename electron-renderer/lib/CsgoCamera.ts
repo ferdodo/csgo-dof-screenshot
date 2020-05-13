@@ -11,11 +11,6 @@ export default class CsgoCamera {
 		this.yaw = 0;
 	}
 
-	randomize(spread: number) {
-		const position = this.position.randomize(spread);
-		return new CsgoCamera(position.x, position.y, position.z);
-	}
-
 	lookAt(target: Vector3D) {
 		this.pitch = this.calculatePitch(target);
 		this.yaw = this.calculateYaw(target);
