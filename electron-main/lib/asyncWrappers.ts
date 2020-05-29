@@ -13,8 +13,8 @@ export async function execFile(file: string, args: string[]): Promise<Buffer> {
 					{
 						file,
 						error,
-						stdout: new Buffer(stdout, "base64").toString(),
-						stderr: new Buffer(stderr, "base64").toString(),
+						stdout: Buffer.from(stdout, "base64").toString(),
+						stderr: Buffer.from(stderr, "base64").toString(),
 					},
 					null,
 					4
@@ -22,7 +22,7 @@ export async function execFile(file: string, args: string[]): Promise<Buffer> {
 
 				reject(new Error(`Failed to execute command ! ${hint}`));
 			} else {
-				resolve(new Buffer(stdout, "base64"));
+				resolve(Buffer.from(stdout, "base64"));
 			}
 		});
 	});
