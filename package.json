@@ -55,7 +55,7 @@
 		"webpack-node-externals": "^1.7.2"
 	},
 	"devDependencies": {
-		"electron": "^9.0.0",
+		"electron": "^11.5.0",
 		"electron-builder": "^22.7.0",
 		"jimp": "^0.12.1",
 		"ts-loader": "^7.0.5",
