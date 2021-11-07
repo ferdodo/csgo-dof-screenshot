@@ -6,7 +6,7 @@ COPY imgMerger /imgMerger
 RUN make -C /imgMerger/src
 
 
-FROM circleci/node:latest-browsers
+FROM circleci/node:lts-browsers
 USER root
 WORKDIR /csgo-dof-screenshot
 
