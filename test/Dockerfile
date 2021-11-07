@@ -15,8 +15,7 @@ WORKDIR /csgo-dof-screenshot
 COPY package.json .
 COPY npm-shrinkwrap.json .
 RUN npm install
-RUN npm outdated
-RUN date +%s | xargs test 1595789923 -gt || npm audit
+RUN npm audit --audit-level=critical
 
 
 # do a first build to prevent electron-builder 'download' stage during  the actual build
