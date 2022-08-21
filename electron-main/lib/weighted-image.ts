@@ -1,17 +1,17 @@
-const { v4: uuidv4 } = require("uuid");
-const { imgMergerPath } = require("./constants.js");
-import { execFile, writeFile } from "./asyncWrappers.ts";
-import ScreenshotsMerger from "./ScreenshotsMerger.ts";
+import { v4 as uuidv4 } from "uuid";
+import { imgMergerPath } from "./constants";
+import { execFile, writeFile } from "./async-wrappers";
+import { ScreenshotsMerger } from "./screenshots-merger";
 
-export default class WeightedImage {
+export class WeightedImage {
 	id: string;
 	path: string;
 	weight: number;
 
-	constructor(path: string, weight: number) {
+	constructor(path: string, weight: number = 1) {
 		this.id = uuidv4();
 		this.path = String(path);
-		this.weight = Number(weight || 1);
+		this.weight = Number(weight);
 	}
 
 	findClosest(screenshotsMerger: ScreenshotsMerger): WeightedImage {
@@ -22,8 +22,7 @@ export default class WeightedImage {
 		if (images.length === 0) throw new Error("Array is empty !");
 
 		return images
-			.sort((a: WeightedImage, b: WeightedImage) => Math.abs(weight - b.weight) - Math.abs(weight - a.weight))
-			[images.length-1];
+			.sort((a: WeightedImage, b: WeightedImage) => Math.abs(weight - b.weight) - Math.abs(weight - a.weight))[images.length-1];
 	}
 
 	async merge(image: WeightedImage, tempDirectory: string): Promise<WeightedImage> {

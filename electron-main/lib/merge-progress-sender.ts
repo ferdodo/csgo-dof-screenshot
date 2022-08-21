@@ -1,5 +1,9 @@
+import { BrowserWindow } from "electron";
 
-class MergeProgressSender{
+export class MergeProgressSender {
+	total: number;
+	processed: number;
+	win: BrowserWindow;
 
 	constructor(total, win){
 		this.total = Number(total);
@@ -9,7 +13,7 @@ class MergeProgressSender{
 
 	sendProgress(){
 		this.processed += 1;
-		var progress = (this.processed / this.total) * 100;
+		const progress = (this.processed / this.total) * 100;
 		this.win.webContents.send("mergeProgressUpdate", progress);
 	}
 
@@ -17,5 +21,3 @@ class MergeProgressSender{
 		this.win.webContents.send("mergeProgressUpdate", undefined);
 	}
 }
-
-module.exports = MergeProgressSender;

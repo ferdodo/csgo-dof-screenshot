@@ -1,4 +1,4 @@
-import Vector3D from "./Vector3D.ts";
+import { Vector3D } from "./vector-3d";
 const PROGRESSIVE_MIN_SIZE = 0.2;
 const PROGRESSIVE_FACTOR = 1.02;
 
@@ -18,7 +18,7 @@ export function* createSphereGenerator(position: Vector3D, diameter: number): Ge
 	const sphereRadius = diameter / 2;
 
 	while (true) {
-		var vector = cubeGenerator.next().value;
+		const vector = cubeGenerator.next().value;
 		if (!vector.isIntoSphere(position, sphereRadius)) continue;
 		yield vector;
 	}
@@ -28,7 +28,7 @@ export function* createProgressiveSphereGenerator(position: Vector3D): Generator
 	let diameter = PROGRESSIVE_MIN_SIZE;
 
 	while (true) {
-		var sphereGenerator = createSphereGenerator(position, diameter);
+		const sphereGenerator = createSphereGenerator(position, diameter);
 		yield sphereGenerator.next().value;
 		diameter *= PROGRESSIVE_FACTOR;
 	}
@@ -41,8 +41,8 @@ export function* createDiscGenerator(position: Vector3D, target: Vector3D, diame
 	const distanceToTargetMin = distanceToTarget - diameter * 0.99;
 
 	while (true) {
-		var vector = sphereGenerator.next().value;
-		var vectorDistanceToTarget = vector.distanceTo(target);
+		const vector = sphereGenerator.next().value;
+		const vectorDistanceToTarget = vector.distanceTo(target);
 		if (vectorDistanceToTarget > distanceToTargetMax) continue;
 		if (vectorDistanceToTarget < distanceToTargetMin) continue;
 		yield vector;
@@ -53,7 +53,7 @@ export function* createProgressiveDiscGenerator(position: Vector3D, target: Vect
 	let diameter = PROGRESSIVE_MIN_SIZE;
 
 	while (true) {
-		var discGenerator = createDiscGenerator(position, target, diameter);
+		const discGenerator = createDiscGenerator(position, target, diameter);
 		yield discGenerator.next().value;
 		diameter *= PROGRESSIVE_FACTOR;
 	}

@@ -1,13 +1,12 @@
-import Vector3D from "../lib/Vector3D.ts";
-import CsgoCamera from "../lib/CsgoCamera.ts";
-import { createDiscGenerator } from "../lib/scatterPlot3DShapesGenerators.ts";
-
+import { Vector3D } from "../lib/vector-3d";
+import { CsgoCamera } from "../lib/csgo-camera";
+import { createDiscGenerator } from "../lib/scatter-plot-3d-shapes-generators";
 
 export function formatScript(target: Vector3D, camera: CsgoCamera, spread: number, bindKey: string): string {
 	const focalShapeGenerator = createDiscGenerator(camera.position, target, spread);
 
 	return Array.from(new Array(600))
-		.map((_: any, i: number) => printCommand(focalShapeGenerator, target, i, bindKey))
+		.map((_, i: number) => printCommand(focalShapeGenerator, target, i, bindKey))
 		.join("")
 		.concat(`bind ${bindKey} dof1;\n`);
 }

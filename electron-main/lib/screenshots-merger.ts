@@ -1,8 +1,10 @@
-var temp = require("temp").track();
-var MergeProgressSender = require("./MergeProgressSender.js");
-const os = require("os");
-import WeightedImage from "./WeightedImage.ts";
+import { track } from "temp";
+import { MergeProgressSender } from "./merge-progress-sender";
+import { cpus } from "os";
+import { WeightedImage } from "./weighted-image";
 import { BrowserWindow } from "electron";
+
+const temp = track();
 
 interface weightedImagePair {
 	a: WeightedImage;
@@ -10,13 +12,13 @@ interface weightedImagePair {
 	distance: number;
 }
 
-export default class ScreenshotsMerger {
+export class ScreenshotsMerger {
 	waitTempDirPath: Promise<string>;
 	images: WeightedImage[];
 	win: BrowserWindow;
-	mergeProgressSender: any;
+	mergeProgressSender: MergeProgressSender | null = null;
 
-	constructor(win: BrowserWindow) {
+	constructor(win) {
 		this.waitTempDirPath = temp.mkdir("tempDir");
 		this.images = [];
 		this.win = win;
@@ -32,8 +34,11 @@ export default class ScreenshotsMerger {
 
 	async mergeAll(): Promise<WeightedImage> {
 		this.mergeProgressSender = new MergeProgressSender(this.images.length, this.win);
-		const cpuCores = os.cpus().length;
-		const mergeAllInstances = Array.from(Array(cpuCores)).map(this.mergeAllThread, this);
+		const cpuCores = cpus().length;
+
+		const mergeAllInstances = Array.from(Array(cpuCores))
+			.map(this.mergeAllThread, this);
+
 		await Promise.all(mergeAllInstances);
 		await this.mergeAllThread();
 		this.mergeProgressSender.sendFinish();
@@ -43,13 +48,13 @@ export default class ScreenshotsMerger {
 
 	private async mergeAllThread() {
 		while (this.images.length > 1) {
-			var { a, b } = this.getImagesPairWithClosestWeightsDistance();
+			const { a, b } = this.getImagesPairWithClosestWeightsDistance();
 			this.remove(a);
 			this.remove(b);
-			var tempDirPath = await this.waitTempDirPath;
-			var merged = await a.merge(b, tempDirPath);
+			const tempDirPath = await this.waitTempDirPath;
+			const merged = await a.merge(b, tempDirPath);
 			this.add(merged);
-			this.mergeProgressSender.sendProgress();
+			this.mergeProgressSender?.sendProgress();
 		}
 	}
 
@@ -58,9 +63,9 @@ export default class ScreenshotsMerger {
 
 		return this.images
 			.map(function (this: ScreenshotsMerger, image: WeightedImage): weightedImagePair {
-				var a = image;
-				var b = image.findClosest(this);
-				var distance = Math.abs(a.weight - b.weight);
+				const a = image;
+				const b = image.findClosest(this);
+				const distance = Math.abs(a.weight - b.weight);
 				return { a, b, distance };
 			}, this)
 			.sort(function (a: weightedImagePair, b: weightedImagePair) {

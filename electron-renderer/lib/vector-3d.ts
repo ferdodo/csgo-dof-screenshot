@@ -1,4 +1,4 @@
-export default class Vector3D {
+export class Vector3D {
 	x: number;
 	y: number;
 	z: number;

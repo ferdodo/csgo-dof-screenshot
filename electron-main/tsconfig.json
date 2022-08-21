@@ -1,9 +1,12 @@
 {
 	"compilerOptions": {
 		"strict": true,
-		"target": "es5",
+		"target": "ES2021",
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
-		"noImplicitReturns": true
+		"noImplicitReturns": true,
+		"noEmit": true,
+		"moduleResolution": "node",
+		"noImplicitAny": false
 	}
 }

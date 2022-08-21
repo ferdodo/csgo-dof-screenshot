@@ -1,8 +1,12 @@
 {
 	"compilerOptions": {
 		"strict": true,
-		"target": "es5",
+		"target": "ES5",
 		"noUnusedLocals": true,
-		"noUnusedParameters": true
+		"noUnusedParameters": true,
+		"noImplicitAny": false,
+		"noEmit": true,
+		"skipLibCheck": true,
+		"moduleResolution": "node"
 	}
 }

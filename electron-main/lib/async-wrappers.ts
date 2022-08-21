@@ -13,8 +13,10 @@ export async function execFile(file: string, args: string[]): Promise<Buffer> {
 					{
 						file,
 						error,
-						stdout: Buffer.from(stdout, "base64").toString(),
-						stderr: Buffer.from(stderr, "base64").toString(),
+						stdout: Buffer.from(stdout, "base64")
+							.toString(),
+						stderr: Buffer.from(stderr, "base64")
+							.toString(),
 					},
 					null,
 					4
@@ -35,7 +37,7 @@ export async function writeFile(file: string, data: Buffer) {
 				const hint = JSON.stringify({ error: String(err) }, null, 4);
 				reject(new Error(`Failed to write file ! ${hint}`));
 			} else {
-				resolve();
+				resolve(undefined);
 			}
 		});
 	});

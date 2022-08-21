@@ -1,6 +1,6 @@
-import Vector3D from "./Vector3D.ts";
+import { Vector3D } from "./vector-3d";
 
-export default class CsgoCamera {
+export class CsgoCamera {
 	position: Vector3D;
 	pitch: number;
 	yaw: number;
