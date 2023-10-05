@@ -14,7 +14,7 @@
     "@typescript-eslint/eslint-plugin": "^5.33.1",
     "@typescript-eslint/eslint-plugin-tslint": "^5.33.1",
     "@typescript-eslint/parser": "^5.33.1",
-    "electron": "^20.0.3",
+    "electron": "^22.3.25",
     "electron-builder": "^23.3.3",
     "esbuild": "^0.15.5",
     "eslint": "^8.22.0",
